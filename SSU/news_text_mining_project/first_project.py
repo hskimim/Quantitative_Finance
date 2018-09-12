@@ -100,25 +100,26 @@ def light_crawling3(PageNum=1):
     return ls
 
 
-def operate_light_crawling(vers,PageNum=False,make_df=True):
+def operate_light_crawling(vers,day_ago=1,PageNum=1,make_df=True):
     '''
     vers : there are only two vers : 2 or 3
     if verse1 then parameter will be fixed, but verse2's parameter can be changed by params named "PageNum"
     make_df : if true, we return the dataframe or, return crawled list
     '''
     display(Markdown('#### vers :{} , make_df : {}'.format(vers,make_df)))
+    t = time.localtime()
     if vers == 2 : 
-        ls1 = light_crawling2(PageNum=1,day_ago=4)
-        ls2 = light_crawling2(PageNum=2,day_ago=4)
+        ls1 = light_crawling2(PageNum=1,day_ago=day_ago)
+        ls2 = light_crawling2(PageNum=2,day_ago=day_ago)
         ls = ls1 + ls2
         if make_df : 
             df = pd.DataFrame(data=ls,columns=['report_bundles'])
-            df.to_csv('light_crawling2.csv',header=False)
+            df.to_csv('light_crawling2_{}.csv'.format(str(t.tm_hour) + str(t.tm_min),header=False)
             return df
         else : return ls
     else : 
         ls = []
-        for i in range(1,PageNum,1):
+        for i in range(1,PageNum+1,1):
             try:
                 ls.append(light_crawling3(PageNum=i))
             except : 
@@ -126,7 +127,7 @@ def operate_light_crawling(vers,PageNum=False,make_df=True):
             
         if make_df : 
             df = pd.DataFrame(data=ls,columns=np.arange(20))   
-            df.to_csv('light_crawling3.csv',header=False)
+            df.to_csv('light_crawling3_{}.csv'.format(str(t.tm_hour) + str(t.tm_min)),header=False)
             return df
         else : return ls
 
