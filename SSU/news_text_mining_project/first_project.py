@@ -8,7 +8,7 @@ import string
 import requests
 import numpy as np
 from IPython.display import display , Markdown 
-
+from konlpy.tag import *
 
 def light_crawling2(PageNum,day_ago=False):
     '''
@@ -100,8 +100,60 @@ def light_crawling3(PageNum=1):
     return ls
 
 
+def operate_light_crawling(vers,PageNum=False,make_df=True):
+    '''
+    vers : there are only two vers : 2 or 3
+    if verse1 then parameter will be fixed, but verse2's parameter can be changed by params named "PageNum"
+    make_df : if true, we return the dataframe or, return crawled list
+    '''
+    display(Markdown('#### vers :{} , make_df : {}'.format(vers,make_df)))
+    if vers == 2 : 
+        ls1 = light_crawling2(PageNum=1,day_ago=4)
+        ls2 = light_crawling2(PageNum=2,day_ago=4)
+        ls = ls1 + ls2
+        if make_df : 
+            df = pd.DataFrame(data=ls,columns=['report_bundles'])
+            df.to_csv('light_crawling2.csv',header=False)
+            return df
+        else : return ls
+    else : 
+        ls = []
+        for i in range(1,PageNum,1):
+            try:
+                ls.append(light_crawling3(PageNum=i))
+            except : 
+                print("{}th page data is not crawled. but we're gonna ignore it.".format(i))
+            
+        if make_df : 
+            df = pd.DataFrame(data=ls,columns=np.arange(20))   
+            df.to_csv('light_crawling3.csv',header=False)
+            return df
+        else : return ls
+
+def konlpy_tuning(csv_name):
+    '''
+    csv_name : data format from method operation named "operate_light_crawaling
+    '''
+    kkma = Kkma()
+    train_df = pd.read_csv(str(csv_name))
+    train = (train_df.values)
+    train_report = [train[i][1] for i in range(len(train))]
+
+    try:
+        training_ls = [str(kkma.nouns(train_report[i])) for i in range(len(train_report))]
+    except : 
+        excepted_ls.append(i)
+        print('{}th data is excepted, maybe it has NaN value'.format(i))
+
+    display(Markdown('#### length of data : {}'.format(len(training_ls))))
+    df = pd.DataFrame(data = training_ls,columns=np.arange(1))
+    df.to_csv('first_konlpy_tuning.csv')
+    return df
 
 def tuning_word(word):
+    '''
+    this function only fit with method named light_crawling2
+    '''
     new_word = str(word)
     new_word = new_word[1:-2]
     new_word = new_word.replace("'","")
@@ -116,6 +168,9 @@ def tuning_word(word):
     return new_word
 
 def fine_tuning(word_list):
+    '''
+    this function only fit with method named light_crawling2
+    '''
     word_list = word_list.split(' ')
     word_list = [re.sub('\W','',word) for word in word_list ]
     word_list = [word for word in word_list if word !='']
