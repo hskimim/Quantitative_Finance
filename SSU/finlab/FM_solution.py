@@ -98,6 +98,7 @@ def second_OLS(individual_stock_df,df,term=10,i=0):
     term : window batch size
     i = how far to go amount of batch size
     '''
+    display(Markdown('시간 소요가 걸리는 작업입니다. 잠시만 기다려주세요!'))
     model_ls = []
     for idx,value in enumerate(individual_stock_df.index):
         model_ls.append(\
@@ -164,9 +165,9 @@ def real_df(individual_stock_df,final_df,T=0,nth_term=1):
     #testing_stock_df 는 전체 데이터프레임에서 market과 bias를 뺀 나머지 데이터 프레임인 
     #individual_stock_df 중에서 기간 제약이 된 데이터 프레임 형태입니다.
     # [:,900+(10*(nth_term-1)):900+(10*nth_term)] 이 과정은 window shift 과정입니다.
-    testing_stock_df = individual_stock_df.iloc[:,900+(10*(nth_term-1)):900+(10*nth_term)]
+    testing_stock_df = individual_stock_df.iloc[:,900+(10*(nth_term)):900+(10*(nth_term+1))]
     # cross_section regression에서 output variable 은 개별 종목의 수익률입니다.
-    real_df['y'] = [testing_stock_df.iat[int(k),T] for k in [j for i in final_df['stock_idx'].values for j in i]]
+    real_df['y'] = [testing_stock_df.iat[int(k),-1] for k in [j for i in final_df['stock_idx'].values for j in i]]
     
     model = OLS.from_formula('y ~ beta + I(beta ** 2) + resid',real_df)
     result = model.fit()
