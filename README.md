@@ -35,6 +35,8 @@
       - function I personally made
     + [Fama_Macbeth](SSU/finlab/Fama_Macbeth.ipynb)
       - can watch the process under the function name FM_solution
+    + [FF_presentation](SSU/finlab/FF_presentation.md)
+      - brief presentation about FF_3factor_model
 - **personal_practice**
     + [Modern_Portfolio_Theory](SSU/personal_practice/Modern_Portfolio_Theory.ipynb)
 - **which_job_is_mine**
