@@ -19,7 +19,7 @@
 
 
 ## Dart_comp_into_Topic
-- [source_link](https://bit.ly/2NlV6dlhttps://bit.ly/2NlV6dl)
+- [source_link](http://www.sirfe.com/?module=file&act=procFileDownload&file_srl=97602&sid=896976091c64155504034ecbff0e88ae)
   - source link about "IPO company text mining authorized by SNU professor named seung jun Jo"
 - [give_me_the_dcm_no](Dart_comp_into_Topic/give_me_the_dcm_no.ipynb)
   - extract document number for getting a annual report
