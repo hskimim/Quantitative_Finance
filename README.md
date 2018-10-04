@@ -16,7 +16,6 @@
 
 <!-- --- -->
 
-=
 
 
 ## Dart_comp_into_Topic
@@ -32,14 +31,14 @@
 ## SSU
 
 - **finlab**
-    + [FM_solution](finlab/FM_solution.py)
+    + [FM_solution](SSU/finlab/FM_solution.py)
       - function I personally made
-    + [Fama_Macbeth](finlab/Fama_Macbeth.ipynb)
+    + [Fama_Macbeth](SSU/finlab/Fama_Macbeth.ipynb)
       - can watch the process under the function name FM_solution
 - **personal_practice**
-    + [Modern_Portfolio_Theory](finlab/Modern_Portfolio_Theory.ipynb)
+    + [Modern_Portfolio_Theory](SSU/personal_practice/Modern_Portfolio_Theory.ipynb)
 - **which_job_is_mine**
-    + [which_job_is_mine](finlab/jobkorea_light_crawling.ipynb)
+    + [which_job_is_mine](SSU/which_job_is_mine/jobkorea_light_crawling.ipynb)
       - I crawled the web-site named "job-korea" which is similar with "linked-in" in US.
       And I examined what kinds of people Korean companies prefer.
 
