@@ -178,3 +178,50 @@ def real_df(individual_stock_df,final_df,T=0,nth_term=1):
     gamma_4.append(result.params[3])
     
     return gamma_1 , gamma_2 , gamma_3 , gamma_4
+
+
+def cross_sectional_func(individual_stock_df,final_df,T=0,nth_term=1):
+    '''
+    gamma_1 : constant 
+    gamma_2 : market_beta
+    gamma_3 : market_beta_square
+    gamma_4 : standard_error
+    '''
+    gamma_1 , gamma_2 , gamma_3 , gamma_4 = [],[],[],[]
+    real_df = pd.DataFrame()
+    ls = []
+    
+    #final_df 에 있는 beta coefficient를 20개씩 배정해주는 반복문입니다.
+    for i in final_df['beta']:
+        for _ in range(20):
+            ls.append(i)
+    real_df['beta'] = ls
+    
+    ls = []    
+    
+    #final_df 에 있는 residual coefficient를 20개씩 배정해주는 반복문입니다.
+    for i in final_df['resid']:
+        for _ in range(20):
+            ls.append(i)
+    real_df['resid'] = ls
+    
+    #testing_stock_df 는 전체 데이터프레임에서 market과 bias를 뺀 나머지 데이터 프레임인 
+    #individual_stock_df 중에서 기간 제약이 된 데이터 프레임 형태입니다.
+    # [:,900+(10*(nth_term-1)):900+(10*nth_term)] 이 과정은 window shift 과정입니다.
+
+    for z in range(10):
+        testing_stock_df = individual_stock_df.iloc[:,900+(10*(nth_term)):900+(10*(nth_term+1))]
+        # cross_section regression에서 output variable 은 개별 종목의 수익률입니다.
+        real_df['y'] = [testing_stock_df.iat[int(k),z] for k in [j for i in final_df['stock_idx'].values for j in i]]
+
+        for i in range(20):
+            testing_real_df = real_df.iloc[20*(i):20*(i+1)]
+            model = OLS.from_formula('y ~ beta + I(beta ** 2) + resid',testing_real_df)
+            result = model.fit()
+        
+            gamma_1.append(result.params[0])
+            gamma_2.append(result.params[1])
+            gamma_3.append(result.params[2])
+            gamma_4.append(result.params[3])
+    
+    return gamma_1 , gamma_2 , gamma_3 , gamma_4
