@@ -56,46 +56,47 @@ CSV file is from http://mba.tuck.dartmouth.edu/pages/faculty/ken.french/Data_Lib
 
  1. 데이터 분석은 `비금융회사`만을 포함하고 있다.(Data analysis includes only `non-financial companies`.)
 
-- why ? :
-    - 비금융회사에서 높은 레버레지는 재정적으로 불안정하다는 것을 의미하지만, 금융회사의 경우 정상적인 경우일 수 있다.
-    - A high leverage in a non-financial company means financially unstable, but it may be normal for a financial company.
+     - why ? :
+         - 비금융회사에서 높은 레버레지는 재정적으로 불안정하다는 것을 의미하지만, 금융회사의 경우 정상적인 경우일 수 있다.
+         - A high leverage in a non-financial company means financially unstable, but it may be normal for a financial company.
 
- 2. `회계 변수`들은 그것이 설명하는 `수익률`보다 먼저 확인 가능하다.(`Accounting variables` can be checked before `profit rate` which it explains.)
+2. `회계 변수`들은 그것이 설명하는 `수익률`보다 먼저 확인 가능하다.(`Accounting variables` can be checked before `profit rate` which it explains.)
 
-- So what did they do :
-    - t-1 년 (1962-1989) 에 있는 모든 회계연도 말의 회계 자료를, t 년 7월부터 t+1 년 6월까지의 수익률과 대응시킨다.
-    - 회계년도 말과 수익률 테스트 간에 최소 6개월의 차이를 둔다.
+    - So what did they do :
+        - t-1 년 (1962-1989) 에 있는 모든 회계연도 말의 회계 자료를, t 년 7월부터 t+1 년 6월까지의 수익률과 대응시킨다.
+        - 회계년도 말과 수익률 테스트 간에 최소 6개월의 차이를 둔다.
+        - The six month gap between financial reporting and realized returns `insure the reflection` of all information into the stock pricing
 
-- `WHICH` data they used and `WHEN` did they take them :
+        - `WHICH` data they used and `WHEN` did they take them :
 
-  - BE/ME , LEVERAGE , E/P , A : `t-1년의 12월 말` 시가총액(ME)을 사용
+        - BE/ME , LEVERAGE , E/P , A : `t-1년의 12월 말` 시가총액(ME)을 사용
 
-  - ME : `t 년의 6월` 시가총액을 사용
+        - ME : `t 년의 6월` 시가총액을 사용
 
-  - pre-ranking beta : t 년 7월 이전의 60개월 중 최소 24개월에 대한 데이터 즉, 최대 5년 최소 2년의 historical Data
+        - pre-ranking beta : t 년 7월 이전의 60개월 중 최소 24개월에 대한 데이터 즉, `최대 5년 최소 2년`의 historical Data
 
 --------------------------------------------------------------------
 
-# 2. β 산출 기준
+# 3. β 산출 기준
 
 - 각각의 베타들을 추정하기 위해서는, 회귀분석 작업이 필요하다. 즉, 모든 베타들에 대해서 회귀 분석 작업이 들어간다.
-    - 베타 : `ME , E/P , A/ME , A/BE , β_m`
+    - 베타 : `ME , E/P , A/ME , A/BE , β_m , BE/ME`
     - 주식별 베타 수치는 별도의 계산을 통해서 만들어져야 한다  
 
 #### Calculating Post - ranking beta
 
 1. NYSE 주식을 시가총액 순으로 10분위 기준점을 잡는다. `(10*1)`
-    - NASDAQ이 표본에 추가되면, 대부분의 포트폴리오에 small_cap 만 포함된다.
+    - NASDAQ이 표본에 추가되면, 포함된 시점부터 대부분의 포트폴리오에 small_cap 만 포함된다.
 2. 사이즈 포트폴리오 내에서, NYSE 주식을 pre-ranking beta 순으로 정렬해 10분위 기준점을 잡는다. `(10*10)`
     - 사이즈-베타 포트폴리오는 7월~6월동안의 데이터로 만들어지고, 6월말에 리밸런싱된다.
 3. 베타를 측정하는 방법 :
       - 시장의 당월 수익률, 전월 수익률 기준 기울기 합을 쓴다.
       - 비동시적으로 일어나는 거래를 조정하기 위함이다.
 
-
+~~~
 - return_p,t = beta_0 + `beta_1` * r_m,t_1 + `beta_2` * r_m,t + resid_p
 - beta_p = beta_1 + beta_2
-
+~~~
 
 <img src="table_1.jpg">
 
@@ -104,9 +105,9 @@ CSV file is from http://mba.tuck.dartmouth.edu/pages/faculty/ken.french/Data_Lib
     - pre-ranking 베타가 실제 post-ranking 베타를 유사하게 재현한다. (재현력 , 예측력)
 
 - `베타의 순서를 변형된 사이즈 순서가 아니다.
-    -모든 사이즈 분위 내에서 ,ln(ME) 의 평균값은 베타로 정렬도니 세부 포트폴리오들 간에 유사한 값을 지닌다.`
+    -모든 사이즈 분위 내에서 ,ln(ME) 의 평균값은 베타로 정렬된 세부 포트폴리오들 간에 유사한 값을 지닌다.`
 --------------------------------------------------------------------
-# 3. 평균수익률과 베타, 평균수익률과 사이즈의 관계
+# 4. 평균수익률과 베타, 평균수익률과 사이즈의 관계
 > (Banz(1981))에 의하면, 사이즈와 R 은 Negative , 베타와 R은 Positive 한 상관성이 있다고 했다.
 
 <img src="table2_1.jpg">
@@ -125,8 +126,8 @@ CSV file is from http://mba.tuck.dartmouth.edu/pages/faculty/ken.french/Data_Lib
 ### 사이즈와 연동된 베타는 평균수익률과 연관이 있다. 하지만, 무관한 베타는 상관관계가 없다.
 - 사이즈 <-> 베타 (Negative) , 사이즈 <-> 평균수익률(Negative) , 베타 <-> 평균수익률(Positive)
 --------------------------------------------------------------------
-# 4. Fama-Macbeth Cross_sectional Regression
-- 모든 베타 선정에 대한 근거 자료
+# 5. Fama-Macbeth Cross_sectional Regression
+- 모든 Risk factor 선정 및 검정에 대한 근거 자료
 
 <img src="table3.jpg">
 
@@ -136,7 +137,7 @@ CSV file is from http://mba.tuck.dartmouth.edu/pages/faculty/ken.french/Data_Lib
 - 평균 수익률(R)과 베타(β) 간에는 상관성이 없다.
 ~~~
 --------------------------------------------------------------------
-# 5. 평균수익률과  E/P , Leverage , BE/ME의 관계
+# 6. 평균수익률과  E/P , Leverage , BE/ME의 관계
 
 <img src="table4_1.jpg">
 <img src="table4_2.jpg">
@@ -199,3 +200,9 @@ CSV file is from http://mba.tuck.dartmouth.edu/pages/faculty/ken.french/Data_Lib
     3. 회사의 전망이 부정적이다.
     4. high BE/ME
     5. High Risk
+
+--------------------------------------------------------------------
+
+## Q1 . FF 3factor model VS FM  
+
+## Q2 . 포트폴리오 접근법 VS 선형회귀분석(linear regression)
