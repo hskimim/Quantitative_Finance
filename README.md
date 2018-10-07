@@ -43,6 +43,8 @@
     + [Modern_Portfolio_Theory](SSU/personal_practice/Modern_Portfolio_Theory.ipynb)
     + [House_Price_function](SSU/personal_practice/House_Price_function.py)
       - function for measuring the house price in South Korea from 'NAVER LAND'
+    + [House_Price_process](SSU/personal_practice/House_price_crawling.ipynb)
+       - process and outcome underlying the function named "House_Price_function.py"
 - **which_job_is_mine**
     + [which_job_is_mine](SSU/which_job_is_mine/jobkorea_light_crawling.ipynb)
       - I crawled the web-site named "job-korea" which is similar with "linked-in" in US.
