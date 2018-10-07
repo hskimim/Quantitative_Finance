@@ -19,7 +19,7 @@
 
 
 ## Dart_comp_into_Topic
-- [source_link](http://www.sirfe.com/?module=file&act=procFileDownload&file_srl=97602&sid=896976091c64155504034ecbff0e88ae)
+- [source_link](https://bit.ly/2NlV6dlhttps://bit.ly/2NlV6dl)
   - source link about "IPO company text mining authorized by SNU professor named seung jun Jo"
 - [give_me_the_dcm_no](Dart_comp_into_Topic/give_me_the_dcm_no.ipynb)
   - extract document number for getting a annual report
@@ -41,6 +41,8 @@
       - brief presentation about FF_3factor_model
 - **personal_practice**
     + [Modern_Portfolio_Theory](SSU/personal_practice/Modern_Portfolio_Theory.ipynb)
+    + [House_Price_function](SSU/personal_practice/House_Price_function.py)
+      - function for measuring the house price in South Korea from 'NAVER LAND'
 - **which_job_is_mine**
     + [which_job_is_mine](SSU/which_job_is_mine/jobkorea_light_crawling.ipynb)
       - I crawled the web-site named "job-korea" which is similar with "linked-in" in US.
