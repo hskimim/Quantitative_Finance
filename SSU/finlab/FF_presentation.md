@@ -100,6 +100,7 @@ E/P is a catch-all proxy for unnamed factors in R of Ball(1978)
       - NYSE , AMEX , NASDAQ 의 value-weighted 포트폴리오의 수익률을 시장 수익률의 대용치로써 사용해 베타를 측정한다.
 
 
+### Stocks Sorted on ME then Pre-Ranking beta
 
 <img src="table_1.jpg">
 
@@ -114,6 +115,8 @@ E/P is a catch-all proxy for unnamed factors in R of Ball(1978)
 > - (Banz(1981))에 의하면, 사이즈와 R 은 Negative , 베타와 R은 Positive 한 상관성이 있다고 했다.
 - model's central prediction : average return is positively related to beta, The betas of size portfolios are however, almost perfectly correlated with size.
 - 위의 말은, SLB에서 진행한, 베타와 수익률간의 테스트가 사이즈 효과에 의해서 왜곡되었다고 주장하는 것.
+
+### Properties of Portfolios Formed on Size or Pre-Ranking betas
 
 <img src="table2_1.jpg">
 <img src="table2_2.jpg">
@@ -135,6 +138,8 @@ E/P is a catch-all proxy for unnamed factors in R of Ball(1978)
 # 5. Fama-Macbeth Cross_sectional Regression
 - time-series averages of the slopes from the month-by-month Fama-MacBeth regressions of the cross-section of stock returns on input variables.
 
+### Average Slopes from Month-by-Month Regressions of Stock Return on betas
+
 <img src="table3.jpg">
 
 #### Can beta Be Saved?
@@ -154,6 +159,7 @@ E/P is a catch-all proxy for unnamed factors in R of Ball(1978)
 
 average returns for July 1963 to December 1990 for portfolios formed on ranked values of BE/ME or E/P.(one-dimensional yearly sorts)
 
+### Properties of Portfolios Formed on BE/ME and E/P
 <img src="table4_1.jpg">
 <img src="table4_2.jpg">
 
@@ -192,11 +198,12 @@ average returns for July 1963 to December 1990 for portfolios formed on ranked v
  3. E / P :
      - 기대수익률(R) 에서 누락된 위험 요인들을 포괄하는 변수라고 규정한다.(Ball(1978))
      - `BUT`
-     - 사이즈와 BE/ME를 더하면 , E / P 더미(dummies)의 영향력이 사라진다.
-     - `E/P와 BE/ME의 정상관성 때문이다.`
+     - 사이즈를 더하면 더미변수의 영향력이 사라진다.
+     - 사이즈와 BE/ME를 함께 하면, 더미변수와 E/P 변수의 영향력이 흡수된다.
 
 --------------------------------------------------------------------
-### 아래의 표는 사이즈와 BM/ME 를 기준으로 10X10 포트폴리오를 만들고, 평균수익률(R)을 표시한 것이다.
+### Average Monthly Returns on Portfolios Formed on Size and BE/ME
+
 <img src="table5.jpg">
 
 - 사이즈를 통제하면 BM/ME 가 평균 수익률의 강한 변동을 포착하게 되고,BM/ME 를 통제하면, 수익률에 사이즈 효과가 남는다.
@@ -209,12 +216,63 @@ average returns for July 1963 to December 1990 for portfolios formed on ranked v
 3. E/P와 평균 수익률 간의 반상관성은(Negative) BM/ME 에 의해 흡수된다.
 ~~~
 
-### 사이즈(ME)와 BE/ME 간의 상관성
+------------------------------------------------------------------
 
-- 반상관성을 띈다.(Negative correlation(-0.26))
-- StoryLine :
-    1. 사이즈가 작으면(low ME)
-    2. 시가총액이 낮다.
-    3. 회사의 전망이 부정적이다.
-    4. high BE/ME
-    5. High Risk
+# Parsimonious Model for Average returns
+
+- 사이즈를 통제한 베타는 평균 수익률과의 신뢰성있는(reliable) 상관관계가 없다.
+
+- 평균 수익률에 대한 시장 레버레지와 장부 레버레지의 반대적 역할은 BE/ME에 의해서 포착된다.
+
+- E/P와 평균 수익률 간의 관계는 사이즈와 BE/ME에 의해서 흡수된다.
+
+### A. Average Returns , Size and BE/ME
+
+<img src="table5.jpg">
+
+- 사이즈를 통제한 BE/ME 는 평균 수익률에 대한 강한 변동성을 보인다.(not-flat)
+- BE/ME를 통제한 사이즈도 평균 수익률과 negative relation을 보인다.
+
+### B. The interaction between Size and BE/ME
+
+- 사이즈와 BE/ME는 반상관성을 띈다.(-0.26)
+~~~
+시가총액이 낮은 즉, 사이즈가 작은 기업은 좋지 않은 전망을 가질 확률이 높아지고, 낮은 주가와 높은 BE/ME를 가지는 경향을 가진다.(be likely to)
+~~~
+- 반상관성을 띄지만, 각 변수들을 통제했을 때, 상대 변수가 큰 변동성(substantial variation)을 보여주기 때문에, 이러한 상관성을 과대해석되면 안된다.
+
+### C. Subperiod Averages of the FM slopes
+
+#### `Subperiod` Average Monthly Returns on the NYSE Equal-Weignted and Value-weighted portfolios and `Subperiod` means of the intercepts and slops from the Monthly FM cross-sectional regressions of Returns
+
+<img src='table_6_1.jpg'>
+
+- in FM regressions, the intercepts means :
+  - explanatory variable = 0
+- in FF tests, the intercepts means :
+  - small stocks (ln(me)=0, me = 1 million)
+  - high BE/ME (ln(BE/ME) = 0 , BE/ME = 1)
+
+- 베타는 여전히 중요한 요소가 아닌 것으로 보인다.
+- 사이즈는 마지막 168개월에서 약해지지만, 해당 기간에 대한추론(inference)이 즉, t(Mn)이 약해진다.
+- BE/ME는 여전히 가장 강력한 요소로 작용한다.
+  - subperiod 의 slope 평균이 전체 slope과 유사하다.(0.35)
+
+### D. Beta and the Market Factor : Caveats(주의사항)
+- 회귀분석에 쓰이는 변수들을 재정의하면(redefinition) 기울기가 달라질 수도 있고, 어쩌면 베타의 역할을 살릴 수도 있다.
+
+- 시행된 테스트가 주식에만 국한 되었기 때문에, 다른 자산을 적용하면, 변수들의 평균 프리미엄에 대한 추론이 바뀔 수 있다.
+
+- 시장 포트폴리오를 형성할 때, 더욱 적절한 대용치를 찾으면 SLB 모델의 베타를 소생시킬 수 있다.(resuscitation). 하지만 긍정적인 전망은 없다.
+  - 하지만, 베타가 시장 대용치에 큰 영향력을 받지 않는 것으로 드러남.Stambaugh(1982)
+  - 즉, 베타 변수 하나로는 정상관성을 띌 가능성은 희박하므로, 멀티팩터 모델에서 찾아야 한다.
+
+
+------------------------------------------------------------------
+# Conclusions and Implications
+
+~~~
+1. 평균 주가수익률이 시장 베타와 정상관성이 있다는 SLB 모델의 중심 예측을 지지하지 않는다.
+2. 사이즈, E/P , 레버레지 , BE/ME 같은 변수들은 기업의 주가를 변형한 변수들로, 회귀분석 과정에서 평균수익률을 설명함에 있어, 몇몇 변수들은 불필요하다고(redundant) 할 수 있다.
+3. 1963~1990 년 기간에 대해, 사이즈와 BE/ME 변수가 나머지 모든 변수들과 연관된 평균주가수익률의 횐단면 변화를 포착한다.
+~~~
