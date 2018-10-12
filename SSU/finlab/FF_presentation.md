@@ -1,4 +1,4 @@
-# THREE FACTOR MODEL
+# The Cross-Section Expected Stock Returns
 ##### Brief presentation
 > FAMA AND FRENCH (1992)
 <br/>
@@ -12,43 +12,40 @@ CSV file is from http://mba.tuck.dartmouth.edu/pages/faculty/ken.french/Data_Lib
 
 ### Contents
 
-1. FF 3 factor 모델 살펴보기
+1. Abstract & Introduction
 
-2. β 를 추정하기 위한 데이터와 접근법
+2. Preliminaries
 
-3. β 산출 기준
+3.  β estimates
 
-3. `평균수익률`과 `베타`, `평균수익률`과 `사이즈`의 관계
+4. The relation between Average return and beta , Average return and size(ME)
 
-5. `평균수익률`과  `E/P` , `Leverage` , `BE/ME`의 관계
+5. The relation between Average return and E/P , Leverage , BE/ME
 
-6. 포트폴리오 접근법과 선형회귀분석의 차이와 장단점
+5. A Parsimonious Model for Average returns
 
-7. Fama-Macbeth 와 Fama-French 3 factor model 의 차이점
-
+6. Conclusion
 --------------------------------------------------------------------
+# 1. Abstract & Introduction
 
-# 1. FF 3 factor 모델 살펴보기
+Two easily measured variables, `size and book-to-market equity`, combine to capture the cross-sectional variation in average stock returns `associated with market beta, size, leverage, book-to-market equity, and earnings-price ratios.` Moreover, when the tests allow for variation in `beta that is unrelated to size`, the relation between market and average return is `flat`, even when Beta is the `only explanatory variable.`
 
-### This model was proposed in 1993 by Eugene Fama and Kenneth French to describe stock returns.
+There are several empirical contradictions of the SLB Model
 
-<img src="FF3.jpg">
+1. size effect of Banz(1981)
+    - `ME` is the explanation of the cross-section of average returns provided by market beta.
+2. positive relation between leverage and average return of Bhandari (1988)
+    - `leverage` helps explain the  cross-section of average stock returns in tests that `include size as well as beta`
+3. positive relation between BE/ME and average return of Stattman and Rosenberg, Reid and Lanstein (1985)
+4. E/P help explain the cross-section of average returns of Basu (1983) and
+E/P is a catch-all proxy for unnamed factors in R of Ball(1978)
+5. relation between beta and average return disappears during the more recent 1963-1990 of Reinganum(1981) and Lakonishok and Shapiro(1986)
 
 
-- `(K_m - R_f)` 는 시장의 초과수익률입니다. 이는 미국에 있는 NYSE, AMEX 또는 NASDAQ 거래소에서 1 개월 재무부 채권 수익률을 뺀 모든 CRSP 기업의 가중 평균 수익률입니다.
-
-  - `(K_m - R_f)` is the excess return of the market. It's the value-weighted return of all CRSP firms incorporated in the US and listed on the NYSE, AMEX, or NASDAQ minus the 1-month Treasury Bill rate.
-
-- `SMB` (Small Minus Big)은 `시가 총액`이 즉, `규모` 큰 주식에 비해 시가 총액이 작은 주식의 초과 수익을 측정합니다.
-
-  - `SMB` (Small Minus Big) measures the excess return of stocks with small market cap over those with larger market cap.
-
-- `HML` (High-Minus Low)은 `성장주`에 대한 `가치주`의 초과 수익을 측정합니다.
-
-  - `HML` (High Minus Low) measures the excess return of value stocks over growth stocks. Value stocks have high book to price ratio (B/P) than growth stocks.
-
+- ME , BE/ME , Leverage , E/P are scaled versions of price.
+- it is reasonable to expect that some of them are `redundant` of Keim(1988)
 --------------------------------------------------------------------
-# 2. β 를 추정하기 위한 데이터와 접근법
+# 2. Preliminaries
 
 > 논문의 1장은 예비 절차(Preliminaries)로 분석에 있어서 사용되는 데이터와 시장 베타의 측정 기준이 정리되어 있다.
 
@@ -73,30 +70,36 @@ CSV file is from http://mba.tuck.dartmouth.edu/pages/faculty/ken.french/Data_Lib
 
         - ME : `t 년의 6월` 시가총액을 사용
 
-        - pre-ranking beta : t 년 7월 이전의 60개월 중 최소 24개월에 대한 데이터 즉, `최대 5년 최소 2년`의 historical Data
+        - pre-ranking beta : 24 to 60 monthly returns(as available) in the 5 years before July of year t. (Only using NYSE)
 
+        - pre-ranking beta , post-ranking beta 를 계산할 때는, 전월 수익률과 당월 수익률을 합한 합산 베타를 적용한다.
+
+~~~
+        - return_p,t = beta_0 + `beta_1` * r_m,t_1 + `beta_2` * r_m,t + resid_p
+        - beta_p = beta_1 + beta_2
+~~~
 --------------------------------------------------------------------
 
-# 3. β 산출 기준
+# 3. β estimates
 
 - 각각의 베타들을 추정하기 위해서는, 회귀분석 작업이 필요하다. 즉, 모든 베타들에 대해서 회귀 분석 작업이 들어간다.
     - 베타 : `ME , E/P , A/ME , A/BE , β_m , BE/ME`
-    - 주식별 베타 수치는 별도의 계산을 통해서 만들어져야 한다  
+    - 주식별 베타 수치는 별도의 프로세스을 추가적으로 적용하여 만들어진다.
+    - 포트폴리오 접근법 사용 why? :
+      - 사이즈 효과를 베타로부터 제거하기 위해서 , to allow for variation in `beta that is unrelated to size.`
 
 #### Calculating Post - ranking beta
 
 1. NYSE 주식을 시가총액 순으로 10분위 기준점을 잡는다. `(10*1)`
     - NASDAQ이 표본에 추가되면, 포함된 시점부터 대부분의 포트폴리오에 small_cap 만 포함된다.
-2. 사이즈 포트폴리오 내에서, NYSE 주식을 pre-ranking beta 순으로 정렬해 10분위 기준점을 잡는다. `(10*10)`
+2. 사이즈 포트폴리오 내에서, NYSE 주식을 pre-ranking beta 순으로 정렬해(subdivide) 10분위 기준점을 잡는다. `(10*10)`
     - 사이즈-베타 포트폴리오는 7월~6월동안의 데이터로 만들어지고, 6월말에 리밸런싱된다.
 3. 베타를 측정하는 방법 :
-      - 시장의 당월 수익률, 전월 수익률 기준 기울기 합을 쓴다.
-      - 비동시적으로 일어나는 거래를 조정하기 위함이다.
+      - 동일 가중 월별 수익률을 만든 size-beta portfolio에 대해서 12달 계산한다.(7~12)
+      - 1년마다 포트폴리오를 리밸런싱하고 같은 프로세스 아래에서 1963~1990 으로 총 330달에 대한 수익률을 계산한다.
+      - NYSE , AMEX , NASDAQ 의 value-weighted 포트폴리오의 수익률을 시장 수익률의 대용치로써 사용해 베타를 측정한다.
 
-~~~
-- return_p,t = beta_0 + `beta_1` * r_m,t_1 + `beta_2` * r_m,t + resid_p
-- beta_p = beta_1 + beta_2
-~~~
+
 
 <img src="table_1.jpg">
 
@@ -104,18 +107,21 @@ CSV file is from http://mba.tuck.dartmouth.edu/pages/faculty/ken.french/Data_Lib
 - 각 사이즈 분위 안에서 post-ranking 베타는 pre-ranking 베타의 순서를 매우 유사하게 재현한다.
     - pre-ranking 베타가 실제 post-ranking 베타를 유사하게 재현한다. (재현력 , 예측력)
 
-- `베타의 순서를 변형된 사이즈 순서가 아니다.
-    -모든 사이즈 분위 내에서 ,ln(ME) 의 평균값은 베타로 정렬된 세부 포트폴리오들 간에 유사한 값을 지닌다.`
+- 베타의 순서는 변형된 사이즈 순서가 아니다.
+    -모든 사이즈 분위 내에서 ,ln(ME) 의 평균값은 베타로 정렬된 세부 포트폴리오들 간에 유사한 값을 지닌다.
 --------------------------------------------------------------------
 # 4. 평균수익률과 베타, 평균수익률과 사이즈의 관계
-> (Banz(1981))에 의하면, 사이즈와 R 은 Negative , 베타와 R은 Positive 한 상관성이 있다고 했다.
+> - (Banz(1981))에 의하면, 사이즈와 R 은 Negative , 베타와 R은 Positive 한 상관성이 있다고 했다.
+- model's central prediction : average return is positively related to beta, The betas of size portfolios are however, almost perfectly correlated with size.
+- 위의 말은, SLB에서 진행한, 베타와 수익률간의 테스트가 사이즈 효과에 의해서 왜곡되었다고 주장하는 것.
 
 <img src="table2_1.jpg">
 <img src="table2_2.jpg">
 
-표를 보게 되면, 평균수익률과 사이즈는 역상관성, 베타는 상관성을 띄는 것으로 보인다.
+표를 보게 되면, 평균수익률과 사이즈는 역상관성, 베타는 상관성을 띄는 것으로 보인다. 즉, 사이즈 포트폴리오는 SLB 모델을 지지한다.
 
 - `사이즈 포트폴리오 내에서 사이즈와 베타 간의 상관 관계에 의한 왜곡된 결과이다.`
+- beta 로 배열된 포트폴리오는 SLB 모델을 지지하지 않는다. 슈익률에 대한 스프레드가 거의 보이지 않는다.
 
 - Panel B : Portfolios Formed on Pre-Ranking β
     - β 의 10분위 수가 1A(최소극단치)일때와 10B(최대극단치)일 때의 차이가 미비하다.
@@ -127,10 +133,16 @@ CSV file is from http://mba.tuck.dartmouth.edu/pages/faculty/ken.french/Data_Lib
 - 사이즈 <-> 베타 (Negative) , 사이즈 <-> 평균수익률(Negative) , 베타 <-> 평균수익률(Positive)
 --------------------------------------------------------------------
 # 5. Fama-Macbeth Cross_sectional Regression
-- 모든 Risk factor 선정 및 검정에 대한 근거 자료
+- time-series averages of the slopes from the month-by-month Fama-MacBeth regressions of the cross-section of stock returns on input variables.
 
 <img src="table3.jpg">
 
+#### Can beta Be Saved?
+- other explanatory variables are correlated with true betas
+  - beta has no power when used alone to explain average Return.
+- the relation is obscured by noise in the beta estimates.
+  - standard error is 0.05 or less. not seems to be imprecise.
+  - post-ranking beta for the portfolios almost perfectly reproduce ordering of the pre-ranking betas. (post-ranking betas are informative about the ordering)
 --------------------------------------------------------------------
 ~~~
 - 평균 수익률(R)과 사이즈(ME) 간에는 강한 상관관계가 있다.
@@ -138,16 +150,22 @@ CSV file is from http://mba.tuck.dartmouth.edu/pages/faculty/ken.french/Data_Lib
 ~~~
 --------------------------------------------------------------------
 # 6. 평균수익률과  E/P , Leverage , BE/ME의 관계
+> 본 장에서는 BE/ME가 Return 과 강한 상관관계가 있음을 알아본다. (심지어 사이즈 효과보다 더 크다.)
+
+average returns for July 1963 to December 1990 for portfolios formed on ranked values of BE/ME or E/P.(one-dimensional yearly sorts)
 
 <img src="table4_1.jpg">
 <img src="table4_2.jpg">
 
 - 평균수익률(R)과 E/P 의 관계는 U자형이다.
-- 평균수익률(R)과 BE/ME 의 관계는 정상관성을 띈다.
-    - 음수 BE/ME는 제외하였다.(50개 기업에 불과함.)
-    - 음수, 양수 BE/ME 모두 기업의 부정적 전망(negative prospective)를 드러낸다.
+- 평균수익률(R)과 BE/ME 의 관계는 정상관성을 띈다. 스프레드의 크기가 사이즈 포트폴리오의 2배에 달한다.
+    - 음수 BE/ME는 제외하였다.(50개 기업에 불과하고 특정 기간에 집중되어 있다.)
+
+- Interpretation of BE/ME :
+    - BE/ME에서 장부가치는 잘 변하지 않는다. 이에 따라 고 BE/ME는 낮은 ME를 의미한다. 즉, 낮은 시장가치를 의미하는 것이다. 즉, 높은 BE/ME 는 기업의 부정적인 전망 신호를 의미한다.
+
 - 베타(β)와 BE/ME 의 관계는 상관성은 보이지 않는다.
---------------------------------------------------------------------
+------------------------------------------------------------------
 ~~~
 - BE / ME 가 사이즈와는 다른(distinctive) 중요한 설명변수이다.
 - BE / ME 가 레버리지 변수의 역할을 대체하고 , E / P 의 역할을 대체한다.
@@ -200,9 +218,3 @@ CSV file is from http://mba.tuck.dartmouth.edu/pages/faculty/ken.french/Data_Lib
     3. 회사의 전망이 부정적이다.
     4. high BE/ME
     5. High Risk
-
---------------------------------------------------------------------
-
-## Q1 . FF 3factor model VS FM  
-
-## Q2 . 포트폴리오 접근법 VS 선형회귀분석(linear regression)
