@@ -99,6 +99,11 @@ E/P is a catch-all proxy for unnamed factors in R of Ball(1978)
       - 1년마다 포트폴리오를 리밸런싱하고 같은 프로세스 아래에서 1963~1990 으로 총 330달에 대한 수익률을 계산한다.
       - NYSE , AMEX , NASDAQ 의 value-weighted 포트폴리오의 수익률을 시장 수익률의 대용치로써 사용해 베타를 측정한다.
 
+#### full-time beta estimates
+
+- After assigning firms to the size-beta portfolios in June, we Calculate the `equal-weighted monthly returns` on the portfolios for the `next 12 months`, from July to June.
+- In the end, we have post-ranking monthly returns for July 1963 to December 1990 on 100 portfolios formed on size and pre-ranking betas.
+- Then FF `estimates betas` using the `full sample (330 months) of post-ranking returns` on each of the 100 portfolios, with the CRSP value-weighted portfolios of NYSE , AMEX , and NASDAQ used as the proxy for the market. (FF did test with equal-weighted portfolio as proxy of the market. The result was similar with before.)
 
 ### Stocks Sorted on ME then Pre-Ranking beta
 
@@ -258,15 +263,22 @@ average returns for July 1963 to December 1990 for portfolios formed on ranked v
 - BE/ME는 여전히 가장 강력한 요소로 작용한다.
   - subperiod 의 slope 평균이 전체 slope과 유사하다.(0.35)
 
-### D. Beta and the Market Factor : Caveats(주의사항)
-- 회귀분석에 쓰이는 변수들을 재정의하면(redefinition) 기울기가 달라질 수도 있고, 어쩌면 베타의 역할을 살릴 수도 있다.
+### D. Beta and the Market Factor : Caveats
+- ` Meaning of Caveats :`
+  - a warning to consider something before taking any more action, or a statement that limits a more general statement
 
-- 시행된 테스트가 주식에만 국한 되었기 때문에, 다른 자산을 적용하면, 변수들의 평균 프리미엄에 대한 추론이 바뀔 수 있다.
 
-- 시장 포트폴리오를 형성할 때, 더욱 적절한 대용치를 찾으면 SLB 모델의 베타를 소생시킬 수 있다.(resuscitation). 하지만 긍정적인 전망은 없다.
-  - 하지만, 베타가 시장 대용치에 큰 영향력을 받지 않는 것으로 드러남.Stambaugh(1982)
-  - 즉, 베타 변수 하나로는 정상관성을 띌 가능성은 희박하므로, 멀티팩터 모델에서 찾아야 한다.
+- The average premiums(slope) for beta , size , BE/ME depend on the `definitions of the variables` used in the regressions.
 
+- `Redefinition` of explanatory variables can produce different regression slopes and perhaps different inferences about average premiums, including possible resuscitation of a role of beta.
+
+- the tests here are `restricted to stocks`. It is possible that including other assets will change the inferences about the average premiums.
+
+- But, FF argued different approaches to the tests are not likely to revive the SLB model.
+
+- Stambaugh's(1982) evidence that tests of the SLB model don't seem to be sensitive to the choice of a market proxy.
+
+- Therefore, FF said that it is likely to be found in a `multi-factor` model that transforms the flat simple relation between R and beta into a positively sloped conditional relation.
 
 ------------------------------------------------------------------
 # Conclusions and Implications
@@ -276,3 +288,39 @@ average returns for July 1963 to December 1990 for portfolios formed on ranked v
 2. 사이즈, E/P , 레버레지 , BE/ME 같은 변수들은 기업의 주가를 변형한 변수들로, 회귀분석 과정에서 평균수익률을 설명함에 있어, 몇몇 변수들은 불필요하다고(redundant) 할 수 있다.
 3. 1963~1990 년 기간에 대해, 사이즈와 BE/ME 변수가 나머지 모든 변수들과 연관된 평균주가수익률의 횐단면 변화를 포착한다.
 ~~~
+
+#### A. Rational Asset-Pricing Stories
+~~~
+- FM regressions always impose a linear factor structure on returns and expected returns that is consistent with the multi-factor asset-pricing models of Merton and Ross.
+
+- test impose a rational asset-pricing framework on the relation between R and ME and BE/ME.
+
+- FF defines the economic explanation for the roles for explanatory variables.
+~~~
+- Chan , Chen and Hsieh(1985) argue that the relation between size and R proxies for a more fundamental relation between R and economic risk factors.
+  - size effect is the `difference between the monthly returns on low-grade and high-grade corporate bonds`, which in principle captures a kind of `default risk` in returns that is priced.
+
+- Chan , Chen (1991) argue that the relation between size and R is a `relative- prospects effect.` relative-prospects effect results in a `distress factor` in R that is priced in expected R.
+
+- If, the market is rational, the BE/ME should be direct indicator.
+
+#### B. Irrational Asset-Pricing Stories
+- FF argued that asset-pricing effects captured by size and BE/ME are rational.
+
+- there is strong alternative. The cross-section of BE/ME might result from `market overreaction` to the relative prospects of firms.
+
+- Simple tests do not confirm that the size and BE/ME effects in average returns are due to market overreaction, at least of the type posited by DeBondt and Thaler(1985).
+
+- One overreaction measure used by DEBondt and Thaler is a `stock's most recent 3-year returns.` (Their overreaction story predicts that 3-year losers have strong post-ranking returns relative to 3-year winners.) - shows no power even when used alone to explain average returns.
+
+#### C. Application
+- a) wheter it will persist, and b) whether it results from rational or irrational asset-pricing.
+
+- FF said that if their results are more than chance, they have practical implications for `portfolio formation` and `performance evaluation` by investors whose primary concern is long-term average returns.
+
+- if asset-pricing is rational:
+  - ME , BE/ME must be proxy for risk. (can be used for managing and evaluating portfolios.)
+
+- if asset-pricing is irrational:
+  - might still be used to evaluate portfolio performance and measure the E(R).
+  - But, the likely persistence of the results is more suspect.
