@@ -286,7 +286,7 @@ average returns for July 1963 to December 1990 for portfolios formed on ranked v
 ~~~
 1. 평균 주가수익률이 시장 베타와 정상관성이 있다는 SLB 모델의 중심 예측을 지지하지 않는다.
 2. 사이즈, E/P , 레버레지 , BE/ME 같은 변수들은 기업의 주가를 변형한 변수들로, 회귀분석 과정에서 평균수익률을 설명함에 있어, 몇몇 변수들은 불필요하다고(redundant) 할 수 있다.
-3. 1963~1990 년 기간에 대해, 사이즈와 BE/ME 변수가 나머지 모든 변수들과 연관된 평균주가수익률의 횐단면 변화를 포착한다.
+3. 1963~1990 년 기간에 대해, 사이즈와 BE/ME 변수가 나머지 모든 변수들과 연관된 평균주가수익률의 횡단면 변화를 포착한다.
 ~~~
 
 #### A. Rational Asset-Pricing Stories
@@ -295,7 +295,7 @@ average returns for July 1963 to December 1990 for portfolios formed on ranked v
 
 - test impose a rational asset-pricing framework on the relation between R and ME and BE/ME.
 
-- FF defines the economic explanation for the roles for explanatory variables.
+- FF inquires the economic explanation for the roles for explanatory variables.
 ~~~
 - Chan , Chen and Hsieh(1985) argue that the relation between size and R proxies for a more fundamental relation between R and economic risk factors.
   - size effect is the `difference between the monthly returns on low-grade and high-grade corporate bonds`, which in principle captures a kind of `default risk` in returns that is priced.
