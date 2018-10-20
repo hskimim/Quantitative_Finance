@@ -33,10 +33,10 @@ def extract_text_from_pdf(pdf_path):
 
     if text:
         return text
-
+################################################################################
 def find_page_idx(file_):
     page_ls = []
-    page_idx = [re.search((re.findall('\x0c[\d]+',file_)[i]),file_).end() for i in range(len(re.findall('\x0c[\d]+',file_)))]
+    page_idx = [re.search((re.findall('\x0c[\d]*',file_)[i]),file_).end() for i in range(len(re.findall('\x0c[\d]+',file_)))]
     for idx,val in enumerate(page_idx):
         if idx ==0 :
             page_ls.append(file_[:val])
@@ -44,17 +44,22 @@ def find_page_idx(file_):
     return page_ls
 
 def find_start_page(file_):
-    ls = ['references','References','REFERENCES','참 고 문 헌' , '참고문헌','<참 고 문 헌>']
-    ref_page = [idx for idx,val in enumerate(find_page_idx(file_)) for i in ls if i in val][0]
-    return ref_page
+    ls = ['references','References','REFERENCES','참 고 문 헌','참  고  문  헌' , '참고문헌','<참 고 문 헌>','Reference','reference','REFERENCE']
+    ref_page = [idx for idx,val in enumerate(find_page_idx(file_)) for i in ls if i in val]
+    if ref_page != [] : return ref_page[0]
+    else : display(Markdown('### you should find another constraint'))
 
-def find_end_page(file_):
-    ls2 = ['Appendix','appendix','APPENDIX','부록','부 록','표 1','테이블 1','테 이 블 1','table 1','Table 1','TABLE 1','Endnotes']
-    end_page = [idx for idx,i in enumerate(find_page_idx(file_)[find_start_page(file_):]) for j in ls2 if j in i]
-    if end_page != [] : return end_page[-1]
-    else :
-        display(Markdown('### This function gonna call the find_end_page_exception'))
-        return find_end_page_ex(file_)
+def find_end_page_ex(file_):
+    page_file = ref1.find_page_idx(file_)
+    start_page = ref1.find_start_page(file_)
+    ls3 = ['“' , '”' , '19[0-9]{2}' , '20[0-9]{2}' , 'Journal' , '[0-9]+[-][0-9]+']
+    if len(page_file[start_page:]) == 1 : return 1
+    for idx,page in enumerate(reversed(page_file[start_page:])):
+        if (len(page_file[start_page:])-idx-1) > start_page :
+            for i in ls3 :
+                if len(re.findall(i,page)) <2 : pass
+                else : return  len(page_file[start_page:])-idx-1
+        else : return -1
 
 def find_end_page_ex(file_):
     page_file = find_page_idx(file_)
@@ -66,37 +71,42 @@ def find_end_page_ex(file_):
             if len(re.findall(i,page)) <2 : pass
             else : return  len(page_file[start_page:])-idx-1
 
-def find_start_idx(file_) :
-    ls = ['references','References','REFERENCES','참 고 문 헌' , '참고문헌','<참 고 문 헌>']
-    start_idx = []
-    start_idx = [re.search(i,file_).end() for i in ls if re.search(i,file_)][0]
-    return start_idx
-
-def find_end_idx(file_):
-    ls1 = ['표 1','테이블 1','테 이 블 1','table 1','Table 1','TABLE 1']
-    ls2 = ['Appendix','appendix','APPENDIX','부록','부 록','Endnotes']
-    try :
-        try :
-            testing_ls = [re.search(i,file_) for i in ls1]
-            testing_ls = [idx for idx,val in enumerate(testing_ls) if val != None][0]
-            end_idx =[(m.start(0), m.end(0)) for m in re.finditer(ls[testing_ls],file_)][-1][0]
-            if end_idx > find_start_idx(file_):
-                return end_idx
-        except :
-            testing_ls = [re.search(i,file_) for i in ls2]
-            testing_ls = [idx for idx,val in enumerate(testing_ls) if val != None][0]
-            end_idx =[(m.start(0), m.end(0)) for m in re.finditer(ls[testing_ls],file_)][-1][0]
-            if end_idx > find_start_idx(file_):
-                return end_idx
-    except :
-        end_idx = re.search(re.findall('[0-9]+[-][0-9]+',file_)[-1],file_).end()
-    return end_idx
-
 def make_references_page(file_):
     page_file = find_page_idx(file_)
     start_page = find_start_page(file_)
     end_page = find_end_page(file_)
     return page_file[start_page:start_page+end_page]
+
+################################################################################
+
+def find_start_idx(file_) :
+    ls = ['references','References','REFERENCES','참 고 문 헌','참  고  문  헌' , '참고문헌','<참 고 문 헌>','Reference','reference','REFERENCE']
+    start_idx = []
+    start_idx = [re.search(str(i),file_).end() for i in ls if re.search(i,file_)]
+    if (start_idx != []) and (start_idx[0] < len(file_)) : return start_idx[0]
+    else :
+        start_idx = [re.search(str(i),file_).end() for i in ls if re.search(i,file_)]
+        if (start_idx != []) and (start_idx < len(file_)) : return start_idx[0]
+        else :
+            display(Markdown('you might find another constraint.'))
+
+def find_end_idx(file_):
+    references = file_[find_start_idx(file_):]
+    ls = ['표 1','테이블 1','테 이 블 1','table 1','Table 1','TABLE 1' ,'Appendix 1','appendix 1','APPENDIX 1','부록','부 록','Endnotes','Figure 1','FIGURE 1',\
+    '표 I','테이블 I','테 이 블 I','table I','Table I','TABLE I' ,'Appendix I','appendix I','APPENDIX I','부록','부 록','Endnotes','Figure I','FIGURE I']
+    testing_ls = [re.search('[\S]*'+str(i)+'[\S]*',references) for i in ls]
+    testing_val = [idx for idx,val in enumerate(testing_ls) if val != None]
+    testing_idx = [val.start() for idx,val in enumerate(testing_ls) if val != None]
+    if testing_idx != []:
+        return find_start_idx(file_) +  int(np.min(testing_idx))
+        # end_idx =[(m.start(0), m.end(0)) for m in re.finditer(ls[testing_val[np.argmax(testing_idx)]],references)][-1][0]
+        # if end_idx > find_start_idx(file_) :
+            # return end_idx + find_start_idx(file_)
+    else :
+        end_idx = [(m.start(0),m.end(0)) for m in re.finditer(re.findall('[0-9]+[-][0-9]+',file_)[-1],file_)][-1][1]
+        if end_idx < find_start_idx(file_) : display(Markdown('you might find another constraint.'))
+        else : return end_idx
+
 
 def make_references(file_):
     start_idx = find_start_idx(file_)
@@ -114,6 +124,7 @@ def make_new_references(references):
         new_references.append(references[code_idx[idx][1]:code_idx[idx+1][1]])
     return new_references
 
+################################################################################
 def make_paper_ls(new_references):
     paper_ls = []
     for idx in range(len(new_references)):
