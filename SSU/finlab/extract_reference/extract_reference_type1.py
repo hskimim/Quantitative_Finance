@@ -44,7 +44,7 @@ def find_page_idx(file_):
     return page_ls
 
 def find_start_page(file_):
-    ls = ['references','References','REFERENCES','참 고 문 헌','참  고  문  헌' , '참고문헌','<참 고 문 헌>','Reference','reference','REFERENCE']
+    ls = ['references','References','REFERENCES','참고 문헌','참 고 문 헌','참  고  문  헌' , '참고문헌','<참 고 문 헌>','Reference','reference','REFERENCE']
     ref_page = [idx for idx,val in enumerate(find_page_idx(file_)) for i in ls if i in val]
     if ref_page != [] : return ref_page[0]
     else : display(Markdown('### you should find another constraint'))
@@ -80,7 +80,8 @@ def make_references_page(file_):
 ################################################################################
 
 def find_start_idx(file_) :
-    ls = ['references','References','REFERENCES','참 고 문 헌','참  고  문  헌' , '참고문헌','<참 고 문 헌>','Reference','reference','REFERENCE']
+    #'references'
+    ls = ['References','REFERENCES','reference','Reference','REFERENCE','참고 문헌','참 고 문 헌','참  고  문  헌' , '참고문헌','<참 고 문 헌>','Reference','reference','REFERENCE']
     start_idx = []
     start_idx = [re.search(str(i),file_).end() for i in ls if re.search(i,file_)]
     if (start_idx != []) and (start_idx[0] < len(file_)) : return start_idx[0]
@@ -92,8 +93,10 @@ def find_start_idx(file_) :
 
 def find_end_idx(file_):
     references = file_[find_start_idx(file_):]
-    ls = ['표 1','테이블 1','테 이 블 1','table 1','Table 1','TABLE 1' ,'Appendix 1','appendix 1','APPENDIX 1','부록','부 록','Endnotes','Figure 1','FIGURE 1',\
-    '표 I','테이블 I','테 이 블 I','table I','Table I','TABLE I' ,'Appendix I','appendix I','APPENDIX I','부록','부 록','Endnotes','Figure I','FIGURE I']
+    # ls = ['표 1','테이블 1','테 이 블 1','table 1','Table 1','TABLE 1' ,'Appendix 1','appendix 1','APPENDIX 1','부록','부 록','Endnotes','Figure 1','FIGURE 1',\
+    # '표 I','테이블 I','테 이 블 I','table I','Table I','TABLE I' ,'Appendix I','appendix I','APPENDIX I','부록','부 록','Endnotes','Figure I','FIGURE I']
+    ls = ['표 1','테이블 1','테이블','테 이 블 1','테 이 블','table 1','Table','Table 1','TABLE 1','TABLE' ,'Appendix','Appendix 1','appendix 1','APPENDIX 1','부록','부 록','Endnotes','Figure 1','FIGURE 1',\
+    '표 I','테이블 I','테 이 블 I','table I','Table I','TABLE I' ,'Appendix I','appendix I','APPENDIX I','부록','부 록','Endnotes','Figure I','Figure','FIGURE I']
     testing_ls = [re.search('[\S]*'+str(i)+'[\S]*',references) for i in ls]
     testing_val = [idx for idx,val in enumerate(testing_ls) if val != None]
     testing_idx = [val.start() for idx,val in enumerate(testing_ls) if val != None]
@@ -113,7 +116,9 @@ def make_references(file_):
     end_idx = find_end_idx(file_)
     return file_[start_idx:end_idx]
 
-def make_new_references(references):
+def make_new_references(file_):
+    display(Markdown('make_references func is working on...'))
+    references = make_references(file_)
     code_ls = re.findall('[0-9]+[-][0-9]+',references) + re.findall('[0-9]+[–][0-9]+',references)
     start_idx = sorted([references.find(code) for code in code_ls])
     end_idx = [val+len(code_ls[idx]) for idx,val in enumerate(start_idx)]
@@ -124,6 +129,35 @@ def make_new_references(references):
         new_references.append(references[code_idx[idx][1]:code_idx[idx+1][1]])
     return new_references
 
+def initial_split(file_):
+    ls = ['WorkingPaper' , 'Working Paper' , 'working paper' , 'Working paper' , 'University' , 'Uni' , 'university' , 'uni']
+    references = ref1.make_references(file_)
+    code_ls = [re.findall('[\S]*'+str(i)+'[\S]*',references) for i in ls]
+    code_ls = list(set([j for i in code_ls for j in i]))
+    start_idx = sorted([references.find(code) for code in code_ls])
+    end_idx = [val+len(code_ls[idx]) for idx,val in enumerate(start_idx)]
+    code_idx = list(zip(start_idx,end_idx))
+    code_idx.insert(0,(0,0))
+    new_references = []
+    for idx in range(len(code_ls)):
+        new_references.append(references[code_idx[idx][1]:code_idx[idx+1][1]])
+    return new_references
+
+def make_new_references_new_vers(file_):
+    ls = ['[0-9]+[–][0-9]+','[0-9]+[-][0-9]+','WorkingPaper' , 'Working Paper' , 'working paper' , 'Working paper' , 'University' , 'Uni' , 'university' , 'uni']
+    references = make_references(file_)
+    new_references = make_new_references(file_)
+    new_references = [j for i in [ref.split('  ') for ref in new_references] for j in i]
+    code_ls = [re.findall('[\S]*'+str(i)+'[\S]*',references) for i in ls]
+    code_ls = list(set([j for i in code_ls for j in i]))
+    start_idx = sorted([references.find(code) for code in code_ls])
+    end_idx = [val+len(code_ls[idx]) for idx,val in enumerate(start_idx)]
+    code_idx = list(zip(start_idx,end_idx))
+    code_idx.insert(0,(0,0))
+    new_references = []
+    for idx in range(len(code_ls)):
+        new_references.append(references[code_idx[idx][1]:code_idx[idx+1][1]])
+    return new_references
 ################################################################################
 def make_paper_ls(new_references):
     paper_ls = []
