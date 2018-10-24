@@ -157,6 +157,11 @@ def make_new_references_new_vers(file_,one_more_tuned=False):
     ls = ['[0-9]{4}년～[0-9]{4}년','[0-9]+[~][0-9]+','[0-9]+[–][0-9]+','[0-9]+[-][0-9]+','Elsevier','MIT','Press.','Forthcoming','forthcoming','WorkingPaper' , 'Working Paper' , 'working paper' , 'Working paper' , 'University' , 'Uni' , 'university' , 'uni',\
     'OECD.','연구보고서','연구원','한국은행','자원부','기술부','Publishing','Institute','SSRN','대회','정기학술발표회','School','Prentice Hall', 'national bureau','National Burea','National burea']
     references = make_references(file_)
+    start_idx = [m.start(0) for m in re.finditer('[(]',references)]
+    end_idx = [m.end(0) for m in re.finditer('[)]',references)]
+    http_ls = [references[start_idx[idx]:end_idx[idx]] for idx in range(len(start_idx)) if 'http' in references[start_idx[idx]:end_idx[idx]]]
+    for http in http_ls:
+        references = re.sub(http,'',references)
     # new_references = make_new_references(file_)
     # new_references = [j for i in [ref.split('  ') for ref in new_references] for j in i]
     # code_ls = [re.findall(str(i),references) for i in ls]
@@ -221,8 +226,8 @@ def finer_tuning_new_references(new_references):
     for idx in idx_ls :
         del new_references[idx]
 
-    new_references = [val[:re.search('[(].+ http',new_references[idx]).start()] if re.search('[(].+ http',new_references[idx]) \
-     else val for idx,val in enumerate(new_references)]
+    # new_references = [val[:re.search('[(].*http.+[)]',new_references[idx]).start()] if re.search('[(].*http.+[)]',new_references[idx]) \
+     # else val for idx,val in enumerate(new_references)]
 
     return [ref for ref in new_references if len(ref) > 5 and ref != ' ' and ref != '']
 
